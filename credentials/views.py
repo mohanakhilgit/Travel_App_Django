@@ -20,7 +20,7 @@ def register(request):
                 return redirect('register')
             elif User.objects.filter(email=email).exists():
                 messages.info(request, "Email Already In Use")
-                return redirect('register')
+                return redirect('credentials:register')
             else:
                 user = User.objects.create_user(
                     username=username,
@@ -31,10 +31,10 @@ def register(request):
                 )
                 user.save()
                 print("USER CREATED")
-                return redirect('login')
+                return redirect('credentials:login')
         else:
             messages.info(request, "Password Not Matching")
-            return redirect('register')
+            return redirect('credentials:register')
 
     return render(request, 'register.html')
 
@@ -48,10 +48,10 @@ def login(request):
         if user is not None:
             auth.login(request, user)
             print(user.first_name)
-            return redirect('home')
+            return redirect('website:home')
         else:
             messages.info(request, "Invalid Credentials")
-            return redirect('login')
+            return redirect('credentials:login')
 
     return render(request, 'login.html')
 
